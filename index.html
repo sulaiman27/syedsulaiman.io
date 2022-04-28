@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head>
+    <title>EJ2 Grid</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Typescript Grid Control">
+    <meta name="author" content="Syncfusion">
+    <link href="index.css" rel="stylesheet">
+    <script src="//ej2.syncfusion.com/javascript/demos/grid/local-data/datasource.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+   
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js" type="text/javascript"></script>
+    <link href="https://cdn.syncfusion.com/ej2/material.css" rel="stylesheet">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script> 
+    
+
+<!--     
+<script src="ej2.min.js"></script> -->
+
+
+
+</head>
+<body>
+
+        <div id="Grid"></div>        
+
+
+
+<script >
+    var grid = new ej.grids.Grid({
+    dataSource: window.orderData,
+    selectionSettings: { persistSelection: true },
+    allowGrouping: true,
+    allowPaging: true,
+    allowSorting: true,
+    allowFiltering: true,
+    filterSettings: { type: 'CheckBox' },
+    editSettings: { allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Normal', newRowPosition:'Top' },
+    toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel','Search'],
+    height: 400,
+    rowDataBound: function (args) {
+        args.isSelectable = args.data.List % 4 === 0;
+    },
+    columns: [
+            { type: "checkbox" },
+            { field: 'OrderID', isPrimaryKey: true, headerText: 'Order ID' },
+            { field: 'CustomerID', headerText: 'CustomerID' },
+            { field: 'EmployeeID', headerText: 'Employee ID' },
+            { field: "ShipCity", headerText: "Ship City", width: 250 },
+    ],
+});
+grid.appendTo('#Grid');
+</script>
+</body></html>
