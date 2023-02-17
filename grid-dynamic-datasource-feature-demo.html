@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>EJ2 Grid</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Typescript Grid Control">
+    <meta name="author" content="Syncfusion">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+    <link href="https://cdn.syncfusion.com/ej2/material.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+    <script src="ej2.min.js"></script>
+    <script src="data.js" type="text/javascript"></script>
+    <style>
+        .e-grid .e-rowcell.e-red {
+            background-color: #91df37;
+        }
+    </style>
+</head>
+
+<body>
+    <br>
+    <br>
+    <br>
+    <br>
+    <button id="btn1">change dataSource1 </button>
+    <button id="btn2">change dataSource2</button>
+    <div id="Grid"></div>
+
+    <script>
+
+
+
+        var grid = new ej.grids.Grid({
+            dataSource: data,
+            height: 410,
+            allowFiltering: true,
+            allowGrouping: true,
+            allowSelection: true,
+            allowPaging: true,
+            groupSettings: { columns: ['CustomerID'] },
+            selectionSettings: { persistSelection: true },
+            editSettings: { allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Normal', newRowPosition: 'Top' },
+            toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel', 'Search', 'ColumnChooser'],
+            allowSorting: true,
+            showColumnChooser: true,
+            filterSettings: { type: 'CheckBox', columns: [{ field: 'CustomerID', matchCase: false, operator: 'notequal', value: 'TOMSP' }] },
+            allowReordering: true,
+            allowResizing: true,
+            queryCellInfo: queryCellInfo,
+            rowSelected: function (args) {
+                console.log(args);
+            },
+            rowSelecting: function (args) {
+                console.log(args);
+            },
+            columns: [
+                { type: 'checkbox', width: 50 },
+                { headerText: 'Template ', textAlign: 'Center', template: '#template', width: 180 },
+                { field: 'OrderID', headerText: 'Order ID', isPrimaryKey: true, width: 120, textAlign: 'Right' },
+                { field: 'CustomerID', headerText: 'Customer Name', width: 160 },
+                { field: 'OrderDate', headerText: 'Order Date', width: 130, format: 'yMd', textAlign: 'Right' },
+                { field: 'Freight', width: 120, format: 'C', textAlign: 'Right' },
+                { field: 'ShipName', headerText: 'Ship Name', width: '170' }
+            ],
+        });
+        grid.appendTo('#Grid');
+
+        function queryCellInfo(args) {
+            if (args.column.field === 'Freight') {
+                args.cell.classList.add('e-red');
+            }
+        }
+        document.getElementById('btn1').addEventListener("click", function () {
+            var newColumn = [
+                { field: 'ContactName', isPrimaryKey: true, headerText: 'Contact Name', width: 120, textAlign: 'Right' },
+                { field: 'CompanyName', headerText: 'Company Name', width: 160 },
+                { field: 'City', headerText: 'City', width: 130, textAlign: 'Right' },
+                { field: 'Country', headerText: 'Country', width: '170' }
+            ];
+            grid.changeDataSource(customerData, newColumn);
+        });
+        document.getElementById('btn2').addEventListener("click", function () {
+            var remotedata = new ej.data.DataManager({
+                url: 'https://services.odata.org/V4/Northwind/Northwind.svc/Orders',
+                adaptor: new ej.data.ODataV4Adaptor()
+            });
+            var newColumn = [
+                { type: 'checkbox', width: 50 },
+                { field: 'OrderID', isPrimaryKey: true, headerText: 'Order ID', width: 120, textAlign: 'Right' },
+                { field: 'CustomerID', headerText: 'Customer Name', width: 160 },
+                { field: 'OrderDate', headerText: 'Order Date', width: 130, format: 'yMd', textAlign: 'Right' },
+                { field: 'Freight', width: 120, format: 'C', textAlign: 'Right' },
+                { field: 'ShipName', headerText: 'Ship Name', width: '170' }
+            ];
+            grid.changeDataSource(remotedata, newColumn);
+        });
+    </script>
+</body>
+
+</html>
